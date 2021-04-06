@@ -1,3 +1,4 @@
+<?php include('folder/dbconnect.php');?>
 <!DOCTYPE html>
 <head>
 	<meta charset="UTF-8">
@@ -126,27 +127,22 @@ table td{
 				<th>Price</th>
 				<th>Trade</th>
 			</tr>
-			<tr>
-				<td class="log"><img src="./bitcoin.png" alt="bitcoinImg"> <p>Bitcoin</p></td>
-				<td> </td>
-				<td><form method="post">
+			<?php
+				$sql="SELECT * FROM crypto";
+				$result=mysqli_query($conn,$sql);
+				while($row=mysqli_fetch_assoc($result)){
+					$name=$row['Name'];
+					$price=$row['Price'];
+			?>
+				<tr>    
+				<td class="log"><img src="./<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
+				<td><?php echo($price) ?> </td>
+                                <td><form method="post">
                         <input id="button" type="submit" value="BUY">
-                    </form></td>
-			</tr>
-			<tr>
-				<td class="log"><img src="./ethereum.png" alt="ethereumImg"> <p>Ethereum</p></td>
-				<td></td>
-				<td><form method="post">
-                        <input id="button" type="submit" value="BUY">
-                    </form></td>
-			</tr>
-			<tr>
-				<td class="log"><img src="./litecoin.png" alt="litecoinImg"> <p>LiteCoin</p></td>
-				<td></td>
-				<td><form method="post">
-                        <input id="button" type="submit" value="BUY">
-                    </form></td>
-			</tr>
+		    </form></td>
+			<?php
+				}
+				?>
 		</table>
 		</div>
 	</main>
