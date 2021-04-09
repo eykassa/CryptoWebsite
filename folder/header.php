@@ -140,8 +140,56 @@ table td{
 	height: 100%;
 	width: 100%;
 }
+.buttonempty{
+	height:2em;
+	width:6em;
+	border: var(--textColor) 1px solid;
+  	border-radius: 1.5em;
+  	font-weight: bold;
+  	transition: all 0.3s ease;
+}
+.buttonfilled{
+	height: 2.5em;
+  width: 6em;
+  background-color: var(--textColor);
+  border: none;
+  color: var(--bgColor);
+  border-radius: 1.5em;
+  font-weight: bold; 
+  transition: all 0.3s ease;
+}
+.buttonempty:hover{
+ color: var(--specColor);
+  border: var(--specColor) 1px solid;
+  opacity: .7;
+}
+.buttonfilled:hover{
+ background-color: var(--specColor);
+  opacity: .7;
+}
+.outButton {
+  margin-left: 80em; 
+  height: 2.5em;
+  width: 6em;
+  background-color: BLUE;
+  border: none;
+  color: var(--bgColor);
+  border-radius: 1.5em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.outButton:hover {
+  opacity: .6;
+}
 	</style>
 </head>
+<?php
+	if(isset($_POST['logout'])){
+		unset($_SESSION['user']);
+		header('location: index.php');
+	}
+?>
 <html>
  <body>
  <div class="upper">
@@ -152,93 +200,29 @@ table td{
 			<div class="menu">
 				<ul>
 				<li> <a href="./index.php">HOME</a></li>
+				<li> 
+					<?php
+					if(isset($_SESSION['user'])){
+						$userName=$_SESSION['user'];
+					?>
+					<h3>Hello, <?php echo $userName;?></h3>
+				        <li> <a href="./portfolio.php">MyProfile</a></li>
+					<form method="POST">
+              				<button type="submit" name="logout" class="outButton">Log out</button>
+            				</form>				
+					<?php }?>
+					<?php
+                                        if(!isset($_SESSION['user'])){
+                                        ?>
 				<li> <a href="./signin.php">Sign in</a></li>
 				<li> <a href="./signup.php">Sign up</a></li>
 				<li> <a href="#">Get Started</a></li>
+                                        <?php }?>
 				</ul>
 			</div>
 		</div>
 	</div>
 
-	<main>
-	<div class="welcome">
-	 <p> WELCOME </P>
-	</div>
-		<div class="coins">
-			<table style="width:100%">
-				<tr>
-					<th>Name</th>
-					<th>Price</th>
-					<th>Trade</th>
-				</tr>
-				<?php
-					$sql="SELECT * FROM crypto";
-					$result=mysqli_query($conn,$sql);
-					while($row=mysqli_fetch_assoc($result)){
-						$name=$row['Name'];
-						$price=$row['Price'];
-				?>
-					<tr>    
-					<td class="log"><img src="./<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
-					<td><?php echo($price) ?> </td>
-									<td><form method="post">
-							<input id="button" type="submit" value="BUY">
-				</form></td>
-				<?php
-					}
-					?>
-			</table>
-		</div>
-		<div class="createPort">
-				<h1> Create your cryptocurrency portoflio today</h1>
-				<p> Lox Coin has a variety of features that make it the best place to start trading </p>
-		</div>
-
-		<div class="con">
-			<div class="left">
-				<div class="box">
-					<div class="logos">
-						<img src="graph.png">
-					</div>
-					<div class="description">
-						<h3>Manage your portfolio</h3>
-						<p>Buy and sell popular digital currencies, keep track of them in the one place.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="calendar.png">
-					</div>
-					<div class="description">
-						<h3>Recurring buys</h3>
-						<p>Invest in cryptocurrency slowly over time by scheduling buys daily, weekly, or monthly.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="lock.png">
-					</div>
-					<div class="description">
-						<h3>Vault protection</h3>
-						<p>For added security, store your funds in a vault with time delayed withdrawals.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="phone.png">
-					</div>
-					<div class="description">
-						<h3>Mobile Apps</h3>
-						<p>Stay on top of the markets with the Coinbase app for Android or iOS.</p>
-					</div>
-				</div>
-			</div>
-			<div class="right">
-					<img src="./list.png" alt="image">
-			</div>
-		</div>
-	</main>
- 	
  </body>
 
 </html>

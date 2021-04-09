@@ -1,4 +1,49 @@
 <!DOCTYPE html>
+<?php
+        include('./folder/header.php');
+        if(isset($_SESSION['user'])){
+                header('Location: portfolio.php');
+                exit();
+        }
+        $generatedError='';
+        if(isset($_POST['submit'])){
+                $firstName=$_POST['firstName'];
+                $lastName=$_POST['lastName'];
+                $userPassword=$_POST['password'];
+                $userPasswordConfirm=$_POST['password2'];
+                $userEmail=$_POST['email'];
+                if($userPassword!=$userPasswordConfirm){
+                        $generatedError='Password does not match';
+                }
+                else if($userEmail==''){
+                        $generatedError='Please enter an email';
+                }
+                else{
+                $sql="SELECT * FROM users where email='$userEmail'";
+
+                $res= mysqli_query($conn,$sql);
+
+                $count= mysqli_num_rows($res);
+
+                if($count>0){
+                        $generatedError="Email address is already used";
+                }
+                else{
+                        $sql="INSERT INTO users (firstName,lastName,email,password) values('$firstName','$lastName','$userEmail','$userPassword')";
+                        $res= mysqli_query($conn,$sql);
+                        if($res){
+                        $userName=$firstName.' '.$lastName;
+                        $_SESSION['user']=$userName;
+                        $_SESSION['userEmail']=$userEmail;
+                        header('Location: portfolio.php');
+                        exit();
+                        }
+
+                }
+                }
+
+        }
+?>
 <head>
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -118,31 +163,17 @@ form input {
 	</style>
 </head>
 <html>
- <body>
-	<div class="upper">
-			<div class="header">
-				<div class="logo">
-					<a href="./index.php"><img class="logo_pic" src="./pictures/Logo.png" alt-"logo"></a>
-				</div>
-				<div class="menu">
-					<ul>
-					<li> <a href="./index.php">HOME</a></li>
-					<li> <a href="signin.php">Sign in</a></li>
-					<li> <a href="signup.php">Sign up</a></li>
-					<li> <a href="#">Get Started</a></li>
-					</ul>
-				</div>
-			</div>
-	</div>
 	<main>
 		<div class="sign"> Sign up for Lox Crypto</div>
 		<div class="container">
                     <form method="post">
-                        <input class="inp first" type="name" name="name" placeholder="Name">
-                        <input class="inp" type="name" name="user_name" placeholder="user_name">
+                        <input class="inp first" type="name" name="firstName" placeholder="First Name">
+                        <input class="inp first" type="name" name="lastName" placeholder="Second Name">
                         <input class="inp" type="email" name="email" placeholder="Email">
                         <input class="inp" type="password" name="password" placeholder="Password">
-                        <input id="button" type="submit" value="Login">
+                        <input class="inp" type="password" name="password2" placeholder="Confirm Password">
+			<p><?php echo $generatedError?></p>
+                        <input id="button" type="submit" name="submit" value="Signup">
                     </form>
         </div>
 		<div id="signup"> Already a member ? <a href="signup.php"> Sign in </a> </div>

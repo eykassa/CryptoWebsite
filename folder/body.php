@@ -146,23 +146,12 @@ table td{
 }
 	</style>
 </head>
-<?php include('folder/header.php');
-	if(!isset($_SESSION['user'])){
-	?>
-		<div class="welcome">
-            <h3>Please sign in</h3>
-        	</div>	
-	<?php
-		header('location: ./signin.php');
-		exit();
-	}?>
 <html>
  <body>
 	<main>
-	
 	<div class="welcome">
-            <h3>Welcome Essayas</h3>
-        </div>
+	 <p> WELCOME </P>
+	</div>
 		<div class="coins">
 			<table style="width:100%">
 				<tr>
@@ -171,11 +160,11 @@ table td{
 					<th>Trade</th>
 				</tr>
 				<?php
-					$userId=$_SESSION['userEmail'];
-					$sql="SELECT * FROM usersCrypto where email='$userId'";
+					$sql="SELECT * FROM crypto";
 					$result=mysqli_query($conn,$sql);
 					while($row=mysqli_fetch_assoc($result)){
-						$name=$row['crypto'];
+						$name=$row['Name'];
+						$price=$row['Price'];
 				?>
 					<tr>    
 					<td class="log"><img src="./pictures/<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
@@ -188,7 +177,54 @@ table td{
 					?>
 			</table>
 		</div>
+		<div class="createPort">
+				<h1> Create your cryptocurrency portoflio today</h1>
+				<p> Lox Coin has a variety of features that make it the best place to start trading </p>
+		</div>
 
+		<div class="con">
+			<div class="left">
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/graph.png">
+					</div>
+					<div class="description">
+						<h3>Manage your portfolio</h3>
+						<p>Buy and sell popular digital currencies, keep track of them in the one place.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/calendar.png">
+					</div>
+					<div class="description">
+						<h3>Recurring buys</h3>
+						<p>Invest in cryptocurrency slowly over time by scheduling buys daily, weekly, or monthly.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/lock.png">
+					</div>
+					<div class="description">
+						<h3>Vault protection</h3>
+						<p>For added security, store your funds in a vault with time delayed withdrawals.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/phone.png">
+					</div>
+					<div class="description">
+						<h3>Mobile Apps</h3>
+						<p>Stay on top of the markets with the Coinbase app for Android or iOS.</p>
+					</div>
+				</div>
+			</div>
+			<div class="right">
+					<img src="./pictures/list.png" alt="image">
+			</div>
+		</div>
 	</main>
  	
  </body>
