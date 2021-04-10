@@ -1,5 +1,20 @@
 <?php include('folder/dbconnect.php');?>
 <!DOCTYPE html>
+<?php 
+	foreach($_POST as $key => $val){
+		if(!isset($_SESSION['user']) && !isset($_POST['search'])){
+			header("location: ./signin.php");
+		}
+		if($key!='buy'&& $key!='search' && $key!='submit'){
+		$userEmail=$_SESSION['userEmail'];
+		$sql4="INSERT into usersCrypto (email,crypto) values('$userEmail','$key')";
+		$res4=mysqli_query($conn,$sql4);
+		$output=$_SESSION["user"]." Purchased ".$key;
+		echo "<script type='text/javascript'>alert('{$output }');</script>";
+		}
+	}
+	
+?>
 <head>
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -144,13 +159,46 @@ table td{
     margin:30px auto 10px auto;
     text-align: center;
 }
+#search {
+        margin: 20px auto 20px auto;
+    width: 40%;
+        background-color:white;
+}
+#search input {
+    padding: 10px;
+    margin-top: 5px;
+    border:solid thin #aaa;
+
+}
+#search #button{
+        background-color: blue;
+        border-radius: 18px;
+        margin-top: 10px;
+}
+.inp{
+        border-radius: 18px;
+        display: block;
+        width: 95%;
+        box-sizing: border-box;
+        padding: 10px;
+        background: white;
+        color:rgb(30, 30, 30);
+        margin: 0 auto 0 auto;
+}
+
 	</style>
 </head>
 <html>
  <body>
 	<main>
 	<div class="welcome">
-	 <p> WELCOME </P>
+	 <p> Search For Avaliable Crypto Coins</P>
+	</div>
+	<div class="search">
+                <form id ="search" method="post">
+                        <input class="inp first" type="text" name="search" placeholder="Search">
+                        <input id="button" name="submit" type="submit" value="Search">
+                </form>
 	</div>
 		<div class="coins">
 			<table style="width:100%">
@@ -159,7 +207,7 @@ table td{
 					<th>Price</th>
 					<th>Trade</th>
 				</tr>
-				<?php
+				<?php if(!isset($_POST['search'])){
 					$sql="SELECT * FROM crypto";
 					$result=mysqli_query($conn,$sql);
 					while($row=mysqli_fetch_assoc($result)){
@@ -170,60 +218,26 @@ table td{
 					<td class="log"><img src="./pictures/<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
 					<td><?php echo($price) ?> </td>
 									<td><form method="post">
-							<input id="button" type="submit" value="BUY">
+									<input id="button" name="<?php echo($name);?>" type="submit" value="BUY">
 				</form></td>
 				<?php
 					}
-					?>
+				}else if(isset($_POST['search'])){
+					$q=$_POST['search'];
+				        $sql="SELECT * FROM crypto where Name like '%$q%'";
+                                        $result=mysqli_query($conn,$sql);
+                                        while($row=mysqli_fetch_assoc($result)){
+                                                $name=$row['Name'];
+                                                $price=$row['Price'];
+                                ?>
+                                        <tr>
+                                        <td class="log"><img src="./pictures/<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
+                                        <td><?php echo($price) ?> </td>
+                                                                        <td><form method="post">
+                                                                        <input id="button" name="<?php echo($name);?>" type="submit" value="BUY">
+                                </form></td>
+				<?php }}?>
 			</table>
-		</div>
-		<div class="createPort">
-				<h1> Create your cryptocurrency portoflio today</h1>
-				<p> Lox Coin has a variety of features that make it the best place to start trading </p>
-		</div>
-
-		<div class="con">
-			<div class="left">
-				<div class="box">
-					<div class="logos">
-						<img src="./pictures/graph.png">
-					</div>
-					<div class="description">
-						<h3>Manage your portfolio</h3>
-						<p>Buy and sell popular digital currencies, keep track of them in the one place.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="./pictures/calendar.png">
-					</div>
-					<div class="description">
-						<h3>Recurring buys</h3>
-						<p>Invest in cryptocurrency slowly over time by scheduling buys daily, weekly, or monthly.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="./pictures/lock.png">
-					</div>
-					<div class="description">
-						<h3>Vault protection</h3>
-						<p>For added security, store your funds in a vault with time delayed withdrawals.</p>
-					</div>
-				</div>
-				<div class="box">
-					<div class="logos">
-						<img src="./pictures/phone.png">
-					</div>
-					<div class="description">
-						<h3>Mobile Apps</h3>
-						<p>Stay on top of the markets with the Coinbase app for Android or iOS.</p>
-					</div>
-				</div>
-			</div>
-			<div class="right">
-					<img src="./pictures/list.png" alt="image">
-			</div>
 		</div>
 	</main>
  	

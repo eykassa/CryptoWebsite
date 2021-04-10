@@ -19,7 +19,6 @@
 
 		if($count==0){
 			$generatedError="User Name not Found";
-			echo "here";
 		}
 		else if($count2==0){
 			$generatedError="Incorrect Password";

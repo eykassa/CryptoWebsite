@@ -108,7 +108,7 @@
     -webkit-box-shadow: -1px 2px 5px 0px rgba(36,34,36,1);
 	-moz-box-shadow: -1px 2px 5px 0px rgba(36,34,36,1);
 	box-shadow: -1px 2px 5px 0px rgba(36,34,36,1);
-    height: 40vh;
+    height: 60vh;
     width: 35%;
     display: flex;
     justify-content: center;
@@ -167,16 +167,16 @@ form input {
 		<div class="sign"> Sign up for Lox Crypto</div>
 		<div class="container">
                     <form method="post">
-                        <input class="inp first" type="name" name="firstName" placeholder="First Name">
-                        <input class="inp first" type="name" name="lastName" placeholder="Second Name">
-                        <input class="inp" type="email" name="email" placeholder="Email">
-                        <input class="inp" type="password" name="password" placeholder="Password">
+                        <input class="inp first" type="name" name="firstName" placeholder="First Name"required>
+                        <input class="inp first" type="name" name="lastName" placeholder="Last Name"required>
+                        <input class="inp" type="email" name="email" placeholder="Email" required>
+                        <input class="inp" type="password" name="password" placeholder="Password"required>
                         <input class="inp" type="password" name="password2" placeholder="Confirm Password">
 			<p><?php echo $generatedError?></p>
                         <input id="button" type="submit" name="submit" value="Signup">
                     </form>
         </div>
-		<div id="signup"> Already a member ? <a href="signup.php"> Sign in </a> </div>
+	<div id="signup"> Already a member ? <a href="./signin.php"> Sign in </a> </div>
 	</main>
  	
  </body>

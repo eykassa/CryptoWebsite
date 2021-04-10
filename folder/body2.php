@@ -140,91 +140,65 @@ table td{
 	height: 100%;
 	width: 100%;
 }
-.buttonempty{
-	height:2em;
-	width:6em;
-	border: var(--textColor) 1px solid;
-  	border-radius: 1.5em;
-  	font-weight: bold;
-  	transition: all 0.3s ease;
-}
-.buttonfilled{
-	height: 2.5em;
-  width: 6em;
-  background-color: var(--textColor);
-  border: none;
-  color: var(--bgColor);
-  border-radius: 1.5em;
-  font-weight: bold; 
-  transition: all 0.3s ease;
-}
-.buttonempty:hover{
- color: var(--specColor);
-  border: var(--specColor) 1px solid;
-  opacity: .7;
-}
-.buttonfilled:hover{
- background-color: var(--specColor);
-  opacity: .7;
-}
-.outButton {
-  margin-left: 580px; 
-  height: 2.5em;
-  width: 6em;
-  background-color: BLUE;
-  border: none;
-  color: var(--bgColor);
-  border-radius: 1.5em;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.outButton:hover {
-  opacity: .6;
+.welcome{
+    margin:30px auto 10px auto;
+    text-align: center;
 }
 	</style>
 </head>
-<?php
-	if(isset($_POST['logout'])){
-		unset($_SESSION['user']);
-		header('location: index.php');
-	}
-?>
 <html>
  <body>
- <div class="upper">
-		<div class="header">
-			<div class="logo">
-				<a href="./index.php"><img class="logo_pic" src="./pictures/Logo.png" alt-"logo"></a>
+	<main>
+		<div class="createPort">
+				<h1> Create your cryptocurrency portoflio today</h1>
+				<p> Lox Coin has a variety of features that make it the best place to start trading </p>
+		</div>
+
+		<div class="con">
+			<div class="left">
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/graph.png">
+					</div>
+					<div class="description">
+						<h3>Manage your portfolio</h3>
+						<p>Buy and sell popular digital currencies, keep track of them in the one place.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/calendar.png">
+					</div>
+					<div class="description">
+						<h3>Recurring buys</h3>
+						<p>Invest in cryptocurrency slowly over time by scheduling buys daily, weekly, or monthly.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/lock.png">
+					</div>
+					<div class="description">
+						<h3>Vault protection</h3>
+						<p>For added security, store your funds in a vault with time delayed withdrawals.</p>
+					</div>
+				</div>
+				<div class="box">
+					<div class="logos">
+						<img src="./pictures/phone.png">
+					</div>
+					<div class="description">
+						<h3>Mobile Apps</h3>
+						<p>Stay on top of the markets with the Coinbase app for Android or iOS.</p>
+					</div>
+				</div>
 			</div>
-			<div class="menu">
-				<ul>
-				<li> <a href="./index.php">HOME</a></li>
-				<li> 
-					<?php
-					if(isset($_SESSION['user'])){
-						$userName=$_SESSION['user'];
-					?>
-					<h3>Hello, <?php echo $userName;?></h3>
-				</li>
-				<li> <a href="./portfolio.php">MyProfile</a></li>
-				<li>
-					<form method="POST">
-              				<button type="submit" name="logout" class="outButton">Log out</button>
-            				</form>				
-				</li>
-					<?php }?>
-					<?php
-                                        if(!isset($_SESSION['user'])){
-                                        ?>
-				<li> <a href="./signin.php">Sign in</a></li>
-				<li> <a href="./signup.php">Sign up</a></li>
-                                        <?php }?>
-				</ul>
+			<div class="right">
+					<img src="./pictures/list.png" alt="image">
 			</div>
 		</div>
-	</div>
-
+	</main>
+ 	
  </body>
 
 </html>

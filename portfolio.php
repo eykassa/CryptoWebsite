@@ -1,4 +1,3 @@
-<?php include('folder/dbconnect.php');?>
 <!DOCTYPE html>
 <head>
 	<meta charset="UTF-8">
@@ -86,7 +85,7 @@ table td{
  table .log{
 	display: flex;
 }
-#button{
+#cButton{
 	Background-color : #1ea642;
 	color: white;
 	margin: 0 40% 0 40%;
@@ -94,7 +93,7 @@ table td{
 	border-radius: 5px;
 	border: none;
 }
-#button:hover{
+#cButton:hover{
 	cursor: pointer;
 }
 .createPort{
@@ -144,6 +143,54 @@ table td{
     margin:30px auto 10px auto;
     text-align: center;
 }
+.currentBalance{
+	text-align:center;
+}
+.currentBalance h3{
+	color: green;
+}
+#search {
+	margin: 20px auto 20px auto;
+    width: 40%;
+	background-color:white;
+}
+#search input {
+    padding: 10px;
+    margin-top: 5px;
+    border:solid thin #aaa;
+
+}
+#search #button{
+	background-color: blue;
+	border-radius: 18px;
+	margin-top: 10px;
+}
+.inp{
+	border-radius: 18px;
+	display: block;
+	width: 95%;
+	box-sizing: border-box;
+	padding: 10px;
+	background: white;
+	color:rgb(30, 30, 30);
+	margin: 0 auto 0 auto;
+}
+
+.men{
+	display: flex;
+	justify-content: space-between;
+	width:40%;
+	margin: 10px auto 20px auto;
+}
+.men a{
+	text-decoration: none;
+	color: black;
+}
+.men a form #button{
+	margin: 0 10px 0 10px;
+	background-color:#f1f5fe;
+	color: blue;
+}
 	</style>
 </head>
 <?php include('folder/header.php');
@@ -156,41 +203,95 @@ table td{
 		header('location: ./signin.php');
 		exit();
 	}?>
+
 <html>
  <body>
 	<main>
 	
 	<div class="welcome">
-            <h3>Welcome Essayas</h3>
+            <h3>Welcome to your portfolio</h3>
         </div>
-		<div class="coins">
-			<table style="width:100%">
-				<tr>
-					<th>Name</th>
-					<th>Price</th>
-					<th>Trade</th>
-				</tr>
-				<?php
-					$userId=$_SESSION['userEmail'];
-					$sql="SELECT * FROM usersCrypto where email='$userId'";
-					$result=mysqli_query($conn,$sql);
-					while($row=mysqli_fetch_assoc($result)){
-						$name=$row['crypto'];
-				?>
-					<tr>    
-					<td class="log"><img src="./pictures/<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
-					<td><?php echo($price) ?> </td>
-									<td><form method="post">
-							<input id="button" type="submit" value="BUY">
-				</form></td>
-				<?php
-					}
-					?>
-			</table>
+		<div class="currentBalance">
+			<?php 
+				$email=$_SESSION['userEmail'];
+				$sql="select sum(Price) as sum from usersCrypto as u, crypto as c  where u.crypto=c.Name and email ='$email'";
+				$result=mysqli_query($conn,$sql);
+				$result2=mysqli_fetch_assoc($result);
+				$sum=$result2['sum'];
+			?>
+				<h3> Current balance: <?php if($sum>0){echo "$".$sum;}else{echo "$0";} ?>  <h3>
 		</div>
+		<div class="men">
+			<a href="buyCrypto.php"> <form method="post">
+			<input id="button" name="buy" type="submit" value="Buy Crypto">
+		</form></a>
+			<a href="assets.php"> <form method="post">
+			<input id="button" name="assests" type="submit" value="My Assests">
+		</form></a>
+			<a href="upcoming.php"> <form method="post">
+			
+			<input id="button" name="upcoming" type="submit" value="Upcoming Crypto">
+		</form> </a>
+		</div>
+		<?php if(isset($_POST['upcoming'])){ ?>
+		<div class="coins">
+                        <table style="width:100%">
+                                <tr>
+                                        <th>Name</th>
+                                        <th>ExpectedPrice</th>
+                                        <th>LaunchDate</th>
+                                </tr>
+				<tr>
+					<td class="log"><img src="./pictures/Essayas.png" alt="essayasImg">
+					<p> EssayasCoin</p>
+					<td>$1000000</td>
+					<td>01/01/2022</td>
+				</tr>
+                        </table>
+		</div>
+		<?php }
+	else if(isset($_POST['assests'])){ ?>
+		<div class="coins">
+                        <table style="width:100%">
+                                <tr>
+                                        <th>Name</th>
+                                        <th>OwnedCoines</th>
+                                        <th>Balance</th>
+                                </tr>
+                                <?php
+                                        $userId=$_SESSION['userEmail'];
+                                        $sql="SELECT DISTINCT * FROM usersCrypto where email='$userId'";
+                                        $result=mysqli_query($conn,$sql);
+                                        while($row=mysqli_fetch_assoc($result)){
+						$name=$row['crypto'];
+						$sql2="SELECT * FROM usersCrypto where email='$userId' and crypto='$name'";
+						$result2=mysqli_query($conn,$sql2);
+						$num=mysqli_num_rows($result2);
+                                ?>
+                                        <tr>    
+                                        <td class="log"><img src="./pictures/<?php echo($name);?>.png" alt="bitcoinImg"> <p><?php echo($name);?></p></td>
+					<td><?php echo($num) ?></td>
+					<td><?php 
+					$sql3="SELECT * FROM crypto where name='$name'";
+					$result3=mysqli_query($conn,$sql3);
+					$row3=mysqli_fetch_assoc($result3);
+					$sum=$row3['Price']*$num;
+					echo '$'.$sum;
+					?>
+					</td>	
+                                <?php
+                                        }
+                                        ?>
+                        </table>
+                </div>
+		<?php }
+		  else {
+			  include("./folder/body.php");
+		  }
+		 ?>
 
 	</main>
- 	
+ <?php include("./folder/footer.php");?> 	
  </body>
 
 </html>
